@@ -1070,7 +1070,7 @@
                     
                     <div class="bg-white p-8 rounded-2xl shadow-lg">
                         <h3 class="text-2xl font-bold mb-8 text-gray-800">أرسل رسالة</h3>
-                        <form action="https://formsubmit.co/zazylalhkr7@gmail.com" method="POST" class="space-y-6">
+                        <form action="https://formsubmit.co/zazylalhkr7@gmail.com" method="POST" onsubmit="return submitContactForm(event)" class="space-y-6">
                             <input type="hidden" name="_subject" value="رسالة جديدة من موقع مكاسر العود">
                             <input type="hidden" name="_captcha" value="false">
                             <input type="hidden" name="_template" value="table">
@@ -2702,6 +2702,59 @@
         }
 
         // UTILITY FUNCTIONS
+        // CONTACT FORM SUBMISSION
+        function submitContactForm(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.innerHTML = '<div class="loading-spinner"></div>جاري إرسال الرسالة...';
+            submitBtn.disabled = true;
+            
+            // Prepare contact form data
+            const formData = new FormData();
+            formData.append('_subject', 'رسالة جديدة من موقع مكاسر العود');
+            formData.append('_captcha', 'false');
+            formData.append('_template', 'table');
+            formData.append('الاسم', form.querySelector('input[name="name"]').value);
+            formData.append('البريد_الإلكتروني', form.querySelector('input[name="email"]').value);
+            formData.append('رقم_الهاتف', form.querySelector('input[name="phone"]').value || 'غير محدد');
+            formData.append('الرسالة', form.querySelector('textarea[name="message"]').value);
+            formData.append('تاريخ_الإرسال', new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'}));
+            formData.append('الموقع', 'مكاسر العود - صفحة التواصل');
+            
+            // Send contact form to email
+            fetch('https://formsubmit.co/zazylalhkr7@gmail.com', {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            }).then(() => {
+                console.log('✅ تم إرسال رسالة التواصل بنجاح');
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Reset form
+                    form.reset();
+                    
+                    showNotification('✅ تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.', 'success');
+                }, 1500);
+            }).catch(() => {
+                console.log('❌ فشل في إرسال رسالة التواصل');
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    showNotification('❌ فشل في إرسال الرسالة، يرجى المحاولة مرة أخرى', 'error');
+                }, 1500);
+            });
+            
+            return false;
+        }
+
         function setupScrollButton() {
             const scrollButton = document.querySelector('.scroll-to-top');
             
